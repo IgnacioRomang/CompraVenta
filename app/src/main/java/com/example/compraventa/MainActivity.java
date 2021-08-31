@@ -2,6 +2,7 @@ package com.example.compraventa;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.style.ClickableSpan;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -20,38 +21,45 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     private ArrayAdapter<CharSequence> spnstring;
     private Button bpublicar;
-    private EditText titulo;
     private Spinner categorias;
-    private CheckBox retiro,Eula;
+    private CheckBox retiro,eula;
     private SeekBar descuento;
     private Switch activDescuento;
+    private TextView textP;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //busco los elementos a usar
+        textP = findViewById(R.id.textPorcentaje);
+        retiro= findViewById(R.id.checkRetiro);
+        activDescuento= findViewById(R.id.switch1);
+        descuento = findViewById(R.id.seekBarEnvios);
+        eula= findViewById(R.id.checkEula);
         categorias = findViewById(R.id.spinnercategoria);
+        bpublicar = findViewById(R.id.buttonPublicar);
+        //cargo las categorias
         spnstring= ArrayAdapter.createFromResource(this,R.array.categorias,R.layout.support_simple_spinner_dropdown_item);
         categorias.setAdapter(spnstring);
-        retiro= findViewById(R.id.checkRetiro);
+        //liseners
         retiro.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isCheck) {
                 LinearLayout retlay= findViewById(R.id.DireccionTodo);
-                if (b) {
+                if (isCheck) {
                     retlay.setVisibility(View.VISIBLE);
                 } else {
                     retlay.setVisibility(View.GONE);
                 }
             }
         });
-        activDescuento= findViewById(R.id.switch1);
         activDescuento.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isCheck) {
                 LinearLayout retlay= findViewById(R.id.SeekbarTodo);
                 TextView adv = findViewById(R.id.textAdv);
-                if (b) {
+                if (isCheck) {
                     adv.setVisibility(View.VISIBLE);
                     retlay.setVisibility(View.VISIBLE);
                 } else {
@@ -60,11 +68,9 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-        descuento = findViewById(R.id.seekBarEnvios);
         descuento.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                TextView textP = findViewById(R.id.textPorcentaje);
                 Integer porcentaje= i;
                 textP.setText(porcentaje.toString());
             }
@@ -77,7 +83,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 TextView adv = findViewById(R.id.textAdv);
-                TextView textP = findViewById(R.id.textPorcentaje);
                 Integer text = 0;
                 if(textP.getText() == text.toString()){
                     adv.setVisibility(View.VISIBLE);
@@ -85,6 +90,30 @@ public class MainActivity extends AppCompatActivity {
                 else{
                     adv.setVisibility(View.GONE);
                 }
+            }
+        });
+        eula.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b){
+                    bpublicar.setClickable(true);
+                }
+                else{
+                    bpublicar.setClickable(false);
+                }
+            }
+        });
+        bpublicar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                    //busco elementos
+                EditText titulo,precio,contacto;
+                titulo = findViewById(R.id.editTextTitulo);
+                precio = findViewById(R.id.editTextPrecio);
+                contacto = findViewById(R.id.editTextCorreo);
+                    //validación
+                //TODO hacer validacion
+                //pantalla depepe
             }
         });
     }

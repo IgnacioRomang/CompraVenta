@@ -15,4 +15,6 @@
     <string name="sada">*Por favor seleccione un porcentaje mayor a 0 o quite la opcion de ofrecer descuento de envio.*</string>
     <string name="EULA">Acepto los términos y condiciones</string>
     <string name="publicar">Publicar</string>
+    <string name="cero">0</string>
+
 </resources>
