@@ -1,14 +1,15 @@
 <resources>
     <string name="app_name">CompraVenta</string>
-    <string name="titulo">Título</string>
+    <string name="titulo">Título (*)</string>
+    <string name="titulohint">Título</string>
     <string name="descripcion">Descripción(Opcional)</string>
     <string name="descripcionHint">Descripción...</string>
-    <string name="correo_de_contacto">Correo de contacto</string>
+    <string name="correo_de_contacto">Correo de contacto (*)</string>
     <string name="correo_de_contactohint">Correo de Electronico...</string>
-    <string name="precio">Precio</string>
+    <string name="precio">Precio (*)</string>
     <string name="preciohint">Precio...</string>
     <string name="ofrecer_descuento_de_envio">Ofrecer descuento de envio</string>
-    <string name="categoria">Categoria</string>
+    <string name="categoria">Categoria (*)</string>
     <string name="retiro_en_persona">Retiro en persona</string>
     <string name="direcci_n_de_env_o">Dirección de retiro</string>
     <string name="direcci_n_de_env_ohint">Dirección...</string>
@@ -16,5 +17,6 @@
     <string name="EULA">Acepto los términos y condiciones</string>
     <string name="publicar">Publicar</string>
     <string name="cero">0</string>
-
+    <string name="error_msj">Formulario incompleto, complete los datos obligatorios</string>
+    <string name="error_acc">Volver</string>
 </resources>

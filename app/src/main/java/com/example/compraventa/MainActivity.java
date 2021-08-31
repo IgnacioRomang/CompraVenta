@@ -1,9 +1,14 @@
 package com.example.compraventa;
 
+import android.annotation.SuppressLint;
+import android.support.design.widget.BaseTransientBottomBar;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.text.style.ClickableSpan;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -26,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private SeekBar descuento;
     private Switch activDescuento;
     private TextView textP;
+    private int categElegida;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +49,13 @@ public class MainActivity extends AppCompatActivity {
         spnstring= ArrayAdapter.createFromResource(this,R.array.categorias,R.layout.support_simple_spinner_dropdown_item);
         categorias.setAdapter(spnstring);
         //liseners
+        categorias.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                //guardo la categoria elegida;
+                categElegida= i;
+            }
+        });
         retiro.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isCheck) {
@@ -106,14 +119,8 @@ public class MainActivity extends AppCompatActivity {
         bpublicar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                    //busco elementos
-                EditText titulo,precio,contacto;
-                titulo = findViewById(R.id.editTextTitulo);
-                precio = findViewById(R.id.editTextPrecio);
-                contacto = findViewById(R.id.editTextCorreo);
-                    //validación
                 //TODO hacer validacion
-                //pantalla depepe
+                Snackbar.make(view ,R.string.error_msj, BaseTransientBottomBar.LENGTH_LONG).setAction(R.string.error_acc,null).show();
             }
         });
     }
