@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity" >
+
+    <TextView
+        android:id="@+id/textTitulo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/titulo"
+        android:textSize="20sp" />
+
+    <EditText
+        android:id="@+id/editTextTitulo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/titulo"
+        android:inputType="textPersonName" />
+
+    <TextView
+        android:id="@+id/textDescrip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/descripcion"
+        android:textSize="20sp" />
+
+    <EditText
+        android:id="@+id/editTextDescrip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:gravity="clip_vertical"
+        android:hint="@string/descripcionHint"
+        android:inputType="textPersonName"
+        android:lines="3" />
+
+    <TextView
+        android:id="@+id/textCategoria"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/categoria"
+        android:textSize="20sp" />
+
+    <Spinner
+        android:id="@+id/spinnercategoria"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/textPrecio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/precio"
+        android:textSize="20sp" />
+
+    <EditText
+        android:id="@+id/editTextPrecio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/preciohint"
+        android:inputType="numberDecimal" />
+
+    <TextView
+        android:id="@+id/textCorreo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/correo_de_contacto"
+        android:textSize="20sp" />
+
+    <EditText
+        android:id="@+id/editTextCorreo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="@string/correo_de_contactohint"
+        android:inputType="textEmailAddress" />
+
+    <Switch
+        android:id="@+id/switch1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:checked="false"
+        android:text="@string/ofrecer_descuento_de_envio" />
+
+    <TextView
+        android:id="@+id/textAdv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/sada"
+        android:textColor="@color/red"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/SeekbarTodo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+
+        <SeekBar
+            android:id="@+id/seekBarEnvios"
+            android:layout_width="378dp"
+            android:layout_height="wrap_content"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/textPorcentaje"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal" />
+    </LinearLayout>
+
+    <CheckBox
+        android:id="@+id/checkRetiro"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:checked="false"
+        android:text="@string/retiro_en_persona"
+        tools:ignore="TouchTargetSizeCheck" />
+
+    <LinearLayout
+        android:id="@+id/DireccionTodo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/textDirec"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/direcci_n_de_env_o"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/editTextDireccion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/direcci_n_de_env_ohint"
+            android:inputType="textPersonName" />
+    </LinearLayout>
+
+    <CheckBox
+        android:id="@+id/checkEula"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/EULA" />
+
+    <Button
+        android:id="@+id/buttonPublicar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="false"
+        android:text="@string/publicar"
+        android:visibility="visible" />
+
+</LinearLayout>
