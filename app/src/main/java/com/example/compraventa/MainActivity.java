@@ -75,7 +75,8 @@ public class MainActivity extends AppCompatActivity {
         descuento.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                textP.setText(i);
+                Integer p=i;
+                textP.setText(p.toString());
             }
 
             @Override
@@ -86,8 +87,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 TextView adv = findViewById(R.id.textAdv);
-               //int text = 0;
-                if(textP.getText() == ((Integer)0).toString()){
+                Integer text = 0;
+                if(textP.getText() == text.toString()){
                     adv.setVisibility(View.VISIBLE);
                 }
                 else{
