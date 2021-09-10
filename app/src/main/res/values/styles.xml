@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="categorias">
+        <item>"Categorias.."</item>
         <item>Indumentaria</item>
         <item>Electronica</item>
         <item>Entretenimiento</item>

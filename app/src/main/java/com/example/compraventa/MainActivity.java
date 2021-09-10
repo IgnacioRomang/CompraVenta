@@ -1,9 +1,13 @@
 package com.example.compraventa;
 
 import android.annotation.SuppressLint;
+import android.content.res.Resources;
 import android.graphics.Color;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.BaseTransientBottomBar;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -12,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
@@ -20,6 +25,9 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 import java.util.regex.Pattern;
 
@@ -30,16 +38,15 @@ public class MainActivity extends AppCompatActivity {
     private CheckBox retiro, eula;
     private SeekBar descuento;
     private Switch activDescuento;
-    private TextView textP;
-    private int categElegida;
+    private TextView textP,adv,ttitulo,tcorreo,tdirc,tprecio,tcategoria;
+    private EditText etitulo,ecorreo,edirc,eprecio;
+    private Integer categElegida;
+    private String regxEmail,regxNum,regxPlano;
+    private LinearLayout retlayDir,seek;
+    private int rojo,def;
 
-    @SuppressLint("ResourceAsColor")
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        categElegida = -1;
-        setContentView(R.layout.activity_main);
-        //busco los elementos a usar
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void loadR(){
         textP = findViewById(R.id.textPorcentaje);
         retiro = findViewById(R.id.checkRetiro);
         activDescuento = findViewById(R.id.switch1);
@@ -47,11 +54,35 @@ public class MainActivity extends AppCompatActivity {
         eula = findViewById(R.id.checkEula);
         categorias = findViewById(R.id.spinnercategoria);
         bpublicar = findViewById(R.id.buttonPublicar);
-        bpublicar.setClickable(false);
-        //cargo las categorias
         spnstring = ArrayAdapter.createFromResource(this, R.array.categorias, R.layout.support_simple_spinner_dropdown_item);
         categorias.setAdapter(spnstring);
-        //liseners
+        retlayDir = findViewById(R.id.DireccionTodo);
+        seek = findViewById(R.id.SeekbarTodo);
+        adv = findViewById(R.id.textAdv);
+        regxPlano= getResources().getString(R.string.regex_tplano);
+        regxNum = getResources().getString(R.string.regex_num);
+        regxEmail = getResources().getString(R.string.regex_email);
+        ttitulo = findViewById(R.id.textTitulo);
+        etitulo = findViewById(R.id.editTextTitulo);
+        tprecio = findViewById(R.id.textPrecio);
+        eprecio = findViewById(R.id.editTextPrecio);
+        tcorreo = findViewById(R.id.textCorreo);
+        ecorreo = findViewById(R.id.editTextCorreo);
+        tdirc = findViewById(R.id.textDirec);
+        edirc = findViewById(R.id.editTextDireccion);
+        tcategoria= findViewById(R.id.textCategoria);
+        rojo = ContextCompat.getColor(this, R.color.red);
+        def = ContextCompat.getColor(this, R.color.def);
+
+    };
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @SuppressLint({"ResourceAsColor", "ResourceType"})
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        this.loadR();
+
         categorias.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -61,26 +92,23 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-                categElegida = -1;
+                categElegida = 0;
             }
         });
         retiro.setOnCheckedChangeListener((compoundButton, isCheck) -> {
-            LinearLayout retlay = findViewById(R.id.DireccionTodo);
             if (isCheck) {
-                retlay.setVisibility(View.VISIBLE);
+                retlayDir.setVisibility(View.VISIBLE);
             } else {
-                retlay.setVisibility(View.GONE);
+                retlayDir.setVisibility(View.GONE);
             }
         });
         activDescuento.setOnCheckedChangeListener((compoundButton, isCheck) -> {
-            LinearLayout retlay = findViewById(R.id.SeekbarTodo);
-            TextView adv = findViewById(R.id.textAdv);
             if (isCheck) {
                 adv.setVisibility(View.VISIBLE);
-                retlay.setVisibility(View.VISIBLE);
+                seek.setVisibility(View.VISIBLE);
             } else {
                 adv.setVisibility(View.GONE);
-                retlay.setVisibility(View.GONE);
+                seek.setVisibility(View.GONE);
             }
         });
         descuento.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -97,7 +125,6 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                TextView adv = findViewById(R.id.textAdv);
                 Integer text = 0;
                 if (textP.getText() == text.toString()) {
                     adv.setVisibility(View.VISIBLE);
@@ -106,88 +133,85 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-        eula.setOnCheckedChangeListener((compoundButton, b) -> bpublicar.setClickable(true));
         bpublicar.setOnClickListener(view -> {
-            //TODO Descrip solo toma 1 linea,Boton al incio se puede presionar
-            String textoPlano = "([A-Z]|[a-z]|[,.]|[\\s\\n]|[0-9])+$";
-            TextView textT;
-            EditText editT;
+            //TODO Descrip solo toma 1 linea
             Pattern expresion = null;
-            boolean validacion = false;
+            List<Boolean> boolArray = new ArrayList<Boolean>();
             switch (1) {
                 case 1:
-                    editT = findViewById(R.id.editTextTitulo);
-                    expresion = Pattern.compile(textoPlano);
-                    textT = findViewById(R.id.textTitulo);
-
-                    if (expresion.matcher(editT.getText().toString()).matches()) {
-                        validacion = true;
-                        textT.setTextColor(R.color.def);
+                    expresion = Pattern.compile(regxPlano);
+                    if (expresion.matcher(etitulo.getText().toString()).matches()) {
+                        boolArray.add(Boolean.TRUE);
+                        ttitulo.setTextColor(def);
                     } else {
-                        //TODO Ver por que no cambia de color
-                        validacion = false;
-                        textT.setTextColor(R.color.red);
-                        break;
+                        boolArray.add(Boolean.FALSE);
+                        ttitulo.setTextColor(rojo);
                     }
                     //titulo
                 case 2:
                     //precio y >0
-                    editT = findViewById(R.id.editTextPrecio);
-                    expresion = Pattern.compile("[0-9]+([,][0-9]+)?$");
-                    if (expresion.matcher(editT.getText().toString()).matches() && Double.parseDouble(editT.getText().toString()) > 0.00d) {
-                        validacion = true;
+                    expresion = Pattern.compile(regxNum);
+                    if (expresion.matcher(eprecio.getText().toString()).matches()) {
+                        boolArray.add(Boolean.TRUE);
+                        tprecio.setTextColor(def);
                     } else {
-                        validacion = false;
-                        break;
+                        boolArray.add(Boolean.FALSE);
+                        tprecio.setTextColor(rojo);
                     }
                 case 3:
                     //categ
-                    if (categElegida < 0) {
-                        validacion = false;
-                        break;
+                    if (categElegida <= 0) {
+                        tcategoria.setTextColor(rojo);
+                        boolArray.add(Boolean.FALSE);
                     } else {
-                        validacion = true;
+                        tcategoria.setTextColor(def);
+                        boolArray.add(Boolean.TRUE);
                     }
                 case 4:
                     //retiro
                     if (retiro.isChecked()) {
-                        //todos los datos de retiro esta re ok
-                        editT = findViewById(R.id.editTextDireccion);
-                        expresion = Pattern.compile(textoPlano);
-                        if (expresion.matcher(editT.getText().toString()).matches()) {
-                            validacion = true;
+                        expresion = Pattern.compile(regxPlano);
+                        if (expresion.matcher(edirc.getText().toString()).matches()) {
+                            tdirc.setTextColor(def);
+                            boolArray.add(Boolean.TRUE);
                         } else {
-                            validacion = false;
-                            break;
+                            tdirc.setTextColor(rojo);
+                            boolArray.add(Boolean.FALSE);
                         }
                     }
                 case 5:
+                    //correo
+                    expresion = Pattern.compile(regxEmail);
+                    if (expresion.matcher(ecorreo.getText().toString()).matches()) {
+                        tcorreo.setTextColor(def);
+                        boolArray.add(Boolean.TRUE);
+                    } else {
+                        tcorreo.setTextColor(rojo);
+                        boolArray.add(Boolean.FALSE);
+                    }
+                    break;
+                case 6:
                     //descuento >0
                     if (activDescuento.isChecked()) {
-                        if (Integer.parseInt(textP.getText().toString()) > 0) {
-                            validacion = true;
+                        Integer i=0;
+                        if (Integer.parseInt(textP.getText().toString()) > i) {
+                            boolArray.add(Boolean.TRUE);
                         } else {
-                            validacion = false;
-                            break;
+                            boolArray.add(Boolean.FALSE);
                         }
                     }
-                case 6:
-                    //correo
-                    editT = findViewById(R.id.editTextCorreo);
-                    expresion = Pattern.compile("([a-z]|[A-Z]|[0-9]|[_-])+@([a-z]|[A-Z]|[0-9]|[_-])*([a-z][A-Z])([a-z]|[A-Z]|[0-9]|[_-])*$");
-                    if (expresion.matcher(editT.getText().toString()).matches()) {
-                        validacion = true;
-                    } else {
-                        validacion = false;
-                        break;
-                    }
             }
-            if (validacion) {
-                //pasar a otra pantalla
+            if (boolArray.stream().allMatch(p-> p.booleanValue()==Boolean.TRUE)) {
                 Toast.makeText(this, R.string.val_ok, Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(this, R.string.val_ok, Toast.LENGTH_SHORT).show();
-                //Snackbar.make(view ,R.string.error_msj, BaseTransientBottomBar.LENGTH_LONG).setAction(R.string.error_acc,null).show();
+                Toast.makeText(this, R.string.val_sad, Toast.LENGTH_SHORT).show();
+            }
+        });
+        bpublicar.setClickable(false);
+        eula.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                bpublicar.setClickable(b);
             }
         });
     }
