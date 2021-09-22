@@ -49,7 +49,8 @@
                 android:ems="10"
                 android:gravity="clip_vertical"
                 android:hint="@string/descripcionHint"
-                android:inputType="textPersonName"
+                android:inputType="textMultiLine"
+                android:maxLines="4"
                 android:minHeight="@dimen/Min"
                 android:textSize="@dimen/t_normal" />
 
