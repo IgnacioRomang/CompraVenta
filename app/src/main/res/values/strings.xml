@@ -9,7 +9,7 @@
     <string name="precio">Precio (*)</string>
     <string name="preciohint">Precio...</string>
     <string name="ofrecer_descuento_de_envio">Ofrecer descuento de envio</string>
-    <string name="categoria">Categoria (*)</string>
+    <string name="categoryViewHolder">Categoria (*)</string>
     <string name="retiro_en_persona">Retiro en persona</string>
     <string name="direcci_n_de_env_o">Dirección de retiro</string>
     <string name="direcci_n_de_env_ohint">Dirección...</string>
@@ -19,9 +19,11 @@
     <string name="cero">0</string>
     <string name="error_msj">Formulario incompleto, complete los datos obligatorios</string>
     <string name="error_acc">Volver</string>
-    <string name= "val_ok">El artículo se publica correctamente</string>
-    <string name= "val_sad">Faltan datos importantes</string>
-    <string name= "regex_tplano">([A-Z]|[a-z]|[,.]|[\\s\\n]|[0-9])+$</string>
-    <string name= "regex_num">([0-9]+([.][0-9]*)?)+$</string>
-    <string name= "regex_email">(^[a-zA-Z0-9_.]+[@]{1}[a-z0-9]{3,}[\\.][a-z]+$)</string>
+    <string name="val_ok">El artículo se publica correctamente</string>
+    <string name="val_sad">Faltan datos importantes</string>
+    <string name="boton_cat">Selecciona la categoría</string>
+    <string name="car_adv">*Usted no seleciono una categoría*</string>
+    <string name="regex_tplano">([A-Z]|[a-z]|[,.]|[\\s\\n]|[0-9])+$</string>
+    <string name="regex_num">([0-9]+([.][0-9]*)?)+$</string>
+    <string name="regex_email">(^[a-zA-Z0-9_.]+[@]{1}[a-z0-9]{3,}[\\.][a-z]+$)</string>
 </resources>
