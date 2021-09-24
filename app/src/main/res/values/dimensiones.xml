@@ -3,7 +3,7 @@
     <dimen name="b_peque">32dp</dimen>
     <dimen name="b_normal">48dp</dimen>
     <dimen name="b_grande">64dp</dimen>
-    <dimen name="ly_Linal">555dp</dimen>
+    <dimen name="ly_Linal">670dp</dimen>
     <dimen name="Min">48dp</dimen>
     <dimen name="t_peque">15sp</dimen>
     <dimen name="t_normal">17sp</dimen>
