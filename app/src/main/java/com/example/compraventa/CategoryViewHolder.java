@@ -1,4 +1,4 @@
-package com.example.compraventa.modelo;
+package com.example.compraventa;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -8,18 +8,28 @@ import android.widget.TextView;
 import com.example.compraventa.R;
 
 public class CategoryViewHolder extends RecyclerView.ViewHolder{
-    TextView id;
+    int lugar;
     TextView name;
+
+    public int getLugar() {
+        return lugar;
+    }
+
+    public void setLugar(int lugar) {
+        this.lugar = lugar;
+    }
+
+    public TextView getName() {
+        return name;
+    }
+
+    public void setName(TextView name) {
+        this.name = name;
+    }
+
     public CategoryViewHolder(@NonNull View itemView) {
         super(itemView);
-        id = itemView.findViewById(R.id.idCat);
         name = itemView.findViewById(R.id.nombreCat);
+    }
 
-    }
-    @Override
-    public String toString() {
-        return "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                '}';
-    }
 }

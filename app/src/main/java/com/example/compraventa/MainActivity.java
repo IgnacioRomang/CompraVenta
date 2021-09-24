@@ -3,49 +3,40 @@ package com.example.compraventa;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.res.AssetManager;
-import android.content.res.Resources;
-import android.graphics.Color;
 import android.os.Build;
-import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.support.design.widget.BaseTransientBottomBar;
-import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.webkit.WebView;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
-import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.compraventa.modelo.Category;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 import java.util.regex.Pattern;
 
 public class MainActivity extends AppCompatActivity {
-    private Button bpublicar,categorias;
+    private Button bpublicar;
+    private ImageButton categorias;
     private CheckBox retiro, eula;
     private SeekBar descuento;
     private Switch activDescuento;
-    private TextView textP,adv,ttitulo,tcorreo,tdirc,tprecio,tcategoria;
+    private TextView textP,adv,ttitulo,tcorreo,tdirc,tprecio,tcategoria,tnameCat;
     private EditText etitulo,ecorreo,edirc,eprecio;
     private String regxEmail,regxNum,regxPlano;
     private LinearLayout retlayDir,seek;
@@ -80,16 +71,29 @@ public class MainActivity extends AppCompatActivity {
         tcategoria= findViewById(R.id.textCategoria);
         rojo = ContextCompat.getColor(this, R.color.red);
         def = ContextCompat.getColor(this, R.color.def);
-
+        tnameCat = findViewById(R.id.nameCat);
     };
     @RequiresApi(api = Build.VERSION_CODES.N)
     @SuppressLint({"ResourceAsColor", "ResourceType"})
+    public String cargarJSON() {
+        String AUX = null;
+        try {
+            InputStream is = this.getAssets().open("Categorias.json");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            AUX = new String(buffer, "UTF-8");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        return AUX;
+    }
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void presionarCat() throws IOException {
-        selecCat =  new Intent(this, SelectorCategoria.class);
-        String aux=null;
-        AssetManager am = this.getAssets();
-        InputStream istream = am.open("Categorias.json");
-        aux = istream.toString();
+        selecCat =  new Intent(MainActivity.this, SelectorCategoria.class);
+        String aux= cargarJSON();
         selecCat.putExtra("cats",aux);
         startActivityForResult(selecCat,CODIGO_OK);
     };
@@ -149,7 +153,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         bpublicar.setOnClickListener(view -> {
-            //TODO Descrip solo toma 1 linea
             Pattern expresion = null;
             List<Boolean> boolArray = new ArrayList<Boolean>();
             switch (1) {
@@ -233,7 +236,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if( resultCode== Activity.RESULT_OK){
             if(requestCode==CODIGO_OK){
-
+                try {
+                    JSONObject ob = new JSONObject(data.getStringExtra("elegido"));
+                    Category cat = new Category(ob.getString("id"),ob.getString("name"));
+                    tnameCat.setText("Selección: "+cat.name+'\n'+"ID: "+cat.id);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
