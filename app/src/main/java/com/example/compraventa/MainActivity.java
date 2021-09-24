@@ -178,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 case 3:
                     //categ
-                    if (categElegida != null) {
+                    if (categElegida == null) {
                         tcategoria.setTextColor(rojo);
                         boolArray.add(Boolean.FALSE);
                     } else {
@@ -238,8 +238,8 @@ public class MainActivity extends AppCompatActivity {
             if(requestCode==CODIGO_OK){
                 try {
                     JSONObject ob = new JSONObject(data.getStringExtra("elegido"));
-                    Category cat = new Category(ob.getString("id"),ob.getString("name"));
-                    tnameCat.setText("Selección: "+cat.name+'\n'+"ID: "+cat.id);
+                    categElegida = new Category(ob.getString("id"),ob.getString("name"));
+                    tnameCat.setText("Selección: "+categElegida.name+'\n'+"ID: "+categElegida.id);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
