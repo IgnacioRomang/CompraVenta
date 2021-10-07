@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:visibility="visible"
     tools:context=".MainActivity">
 
     <ScrollView
@@ -58,15 +59,33 @@
                 android:id="@+id/textCategoria"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/categoria"
+                android:text="@string/categoryViewHolder"
                 android:textSize="@dimen/t_grande" />
 
-            <Spinner
-                android:id="@+id/spinnercategoria"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:minHeight="@dimen/Min"
-                tools:ignore="SpeakableTextPresentCheck" />
+                android:gravity="center_horizontal|top|left"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/buttonCat"
+                    android:layout_width="@dimen/tY_peque"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:srcCompat="?android:attr/actionModeFindDrawable" />
+
+                <TextView
+                    android:id="@+id/nameCat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center|center_horizontal"
+                    android:text="@string/seleccion"
+                    android:textSize="@dimen/t_normal"
+                    android:visibility="visible"
+                    tools:visibility="visible" />
+
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/textPrecio"
@@ -117,8 +136,10 @@
                 android:id="@+id/textAdv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
                 android:text="@string/sada"
                 android:textColor="@color/red"
+                android:textSize="@dimen/t_peque"
                 android:visibility="gone"
                 tools:visibility="visible" />
 

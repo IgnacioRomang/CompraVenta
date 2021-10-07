@@ -1,61 +1,59 @@
 package com.example.compraventa;
 
 import android.annotation.SuppressLint;
-import android.content.res.Resources;
-import android.graphics.Color;
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Build;
+import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.support.design.widget.BaseTransientBottomBar;
-import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.webkit.WebView;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
-import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 import java.util.regex.Pattern;
 
 public class MainActivity extends AppCompatActivity {
-    private ArrayAdapter<CharSequence> spnstring;
     private Button bpublicar;
-    private Spinner categorias;
+    private ImageButton categorias;
     private CheckBox retiro, eula;
     private SeekBar descuento;
     private Switch activDescuento;
-    private TextView textP,adv,ttitulo,tcorreo,tdirc,tprecio,tcategoria;
+    private TextView textP,adv,ttitulo,tcorreo,tdirc,tprecio,tcategoria,tnameCat;
     private EditText etitulo,ecorreo,edirc,eprecio;
-    private Integer categElegida;
     private String regxEmail,regxNum,regxPlano;
     private LinearLayout retlayDir,seek;
     private int rojo,def;
-
+    private Category categElegida;
+    private Intent selecCat;
+    private static int CODIGO_OK = 0;
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void loadR(){
+        categElegida = null;
         textP = findViewById(R.id.textPorcentaje);
         retiro = findViewById(R.id.checkRetiro);
         activDescuento = findViewById(R.id.switch1);
         descuento = findViewById(R.id.seekBarEnvios);
         eula = findViewById(R.id.checkEula);
-        categorias = findViewById(R.id.spinnercategoria);
         bpublicar = findViewById(R.id.buttonPublicar);
-        spnstring = ArrayAdapter.createFromResource(this, R.array.categorias, R.layout.support_simple_spinner_dropdown_item);
-        categorias.setAdapter(spnstring);
+        categorias = findViewById(R.id.buttonCat);
         retlayDir = findViewById(R.id.DireccionTodo);
         seek = findViewById(R.id.SeekbarTodo);
         adv = findViewById(R.id.textAdv);
@@ -73,26 +71,47 @@ public class MainActivity extends AppCompatActivity {
         tcategoria= findViewById(R.id.textCategoria);
         rojo = ContextCompat.getColor(this, R.color.red);
         def = ContextCompat.getColor(this, R.color.def);
-
+        tnameCat = findViewById(R.id.nameCat);
     };
     @RequiresApi(api = Build.VERSION_CODES.N)
     @SuppressLint({"ResourceAsColor", "ResourceType"})
+    public String cargarJSON() {
+        String AUX = null;
+        try {
+            InputStream is = this.getAssets().open("Categorias.json");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            AUX = new String(buffer, "UTF-8");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        return AUX;
+    }
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void presionarCat() throws IOException {
+        selecCat =  new Intent(MainActivity.this, SelectorCategoria.class);
+        String aux= cargarJSON();
+        selecCat.putExtra("cats",aux);
+        startActivityForResult(selecCat,CODIGO_OK);
+    };
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         this.loadR();
 
-        categorias.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        categorias.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                //elegir categoria;
-                categElegida = i;
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-                categElegida = 0;
+            public void onClick(View view) {
+                try {
+                    presionarCat();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
         retiro.setOnCheckedChangeListener((compoundButton, isCheck) -> {
@@ -134,7 +153,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         bpublicar.setOnClickListener(view -> {
-            //TODO Descrip solo toma 1 linea
             Pattern expresion = null;
             List<Boolean> boolArray = new ArrayList<Boolean>();
             switch (1) {
@@ -160,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 case 3:
                     //categ
-                    if (categElegida <= 0) {
+                    if (categElegida == null) {
                         tcategoria.setTextColor(rojo);
                         boolArray.add(Boolean.FALSE);
                     } else {
@@ -214,5 +232,18 @@ public class MainActivity extends AppCompatActivity {
                 bpublicar.setClickable(b);
             }
         });
+    }
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if( resultCode== Activity.RESULT_OK){
+            if(requestCode==CODIGO_OK){
+                try {
+                    JSONObject ob = new JSONObject(data.getStringExtra("elegido"));
+                    categElegida = new Category(ob.getString("id"),ob.getString("name"));
+                    tnameCat.setText("Selección: "+categElegida.name+'\n'+"ID: "+categElegida.id);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }

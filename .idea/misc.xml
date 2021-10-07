@@ -3,7 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/nacho/AndroidStudioProjects/CompraVenta/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Users/nacho/AndroidStudioProjects/CompraVenta/app/src/main/res/layout/activity_main.xml" value="0.22" />
+        <entry key="..\:/Users/nacho/AndroidStudioProjects/CompraVenta/app/src/main/res/layout/activity_selector_categoria.xml" value="0.22" />
+        <entry key="..\:/Users/nacho/AndroidStudioProjects/CompraVenta/app/src/main/res/layout/fila_cat.xml" value="0.21" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/activity_selector_categoria.xml" value="0.19322916666666667" />
+        <entry key="app/src/main/res/layout/fila_cat.xml" value="0.5" />
       </map>
     </option>
   </component>
